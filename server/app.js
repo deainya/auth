@@ -79,14 +79,14 @@ apiRoutes.post('/authenticate', function(req, res) {
       } else {
         // if user is found and password is right
         // create a token
-        //var token = jwt.sign(user, app.get('superSecret'), {
-        //  expiresInMinutes: 1440 // expires in 24 hours
-        //});
+        var token = jwt.sign(user, app.get('superSecret'), {
+          expiresIn: 1440 // expires in 24 hours
+        });
         // return the information including token as JSON
         res.json({
           success: true,
           message: 'Enjoy your token!'//,
-          //token: token
+          token: token
         });
       }
     }
