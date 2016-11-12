@@ -59,16 +59,16 @@ apiRoutes.post('/signup', function(req, res) {
 });
 
 apiRoutes.post('/login', function(req, res) {
-  User.findOne({ name: req.body.name }, '+password', function(err, user) { // ?+password
+  User.findOne({ name: req.body.name }, function(err, user) { // ?+password
     if (err) throw err;
     if (!user) {
       //res.json({ success: false, message: 'Authentication failed. Wrong creditenials.' });
-      return res.status(401).send({ success: false, message: 'Authentication failed. Wrong creditenials' }); // User not found
+      return res.status(401).send({ success: false, message: 'Authentication failed. Wrong name' }); // User not found
     }
     user.comparePassword(req.body.password, function(err, isMatch) {
       if (!isMatch) {
         //res.json({ success: false, message: 'Authentication failed. Wrong creditenials.' });
-        return res.status(401).send({ success: false, message: 'Authentication failed. Wrong creditenials' }); // Wrong password
+        return res.status(401).send({ success: false, message: 'Authentication failed. Wrong password' }); // Wrong password
       }
       // if user is found and password is right then create a token
       var token = jwt.sign(user, Config.secret, { expiresIn: 1440 }); // expires in 24 hours
