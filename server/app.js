@@ -19,6 +19,10 @@ app.use(morgan('dev')); // use morgan to log requests to the console
 app.use(express.static(__dirname + "/../client")); // default route
 
 // Routes                     ==================================================
+app.get('/test', function(req, res) {
+  User.find({}, function(err, users) { res.json(users); });
+});
+
 /*app.get('/setup', function(req, res) {
   // create a sample user
   var nick = new User({
@@ -68,7 +72,7 @@ apiRoutes.post('/login', function(req, res) {
     user.comparePassword(req.body.password, function(err, isMatch) {
       if (!isMatch) {
         //res.json({ success: false, message: 'Authentication failed. Wrong creditenials.' });
-        return res.status(401).send({ success: false, message: 'Authentication failed. Wrong password' }); // Wrong password
+        return res.status(401).send({ success: false, message: 'Authentication failed. Wrong password ' + err }); // Wrong password
       }
       // if user is found and password is right then create a token
       var token = jwt.sign(user, Config.secret, { expiresIn: 1440 }); // expires in 24 hours
