@@ -50,7 +50,7 @@ apiRoutes.post('/signup', function(req, res) {
     }
     var user = new User({
       //displayName: req.body.displayName,
-      name: req.body.email,
+      name: req.body.name,
       password: req.body.password
     });
     user.save(function(err, result) {
