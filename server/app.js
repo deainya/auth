@@ -23,20 +23,6 @@ app.get('/test', function(req, res) {
   User.find({}, function(err, users) { res.json(users); });
 });
 
-/*app.get('/setup', function(req, res) {
-  // create a sample user
-  var nick = new User({
-    name: 'Nick Cerminara',
-    password: 'password',
-  });
-  // save the sample user
-  nick.save(function(err) {
-    if (err) throw err;
-    console.log('User saved successfully');
-    res.json({ success: true });
-  });
-});*/
-
 // API routes                 ==================================================
 let apiRoutes = express.Router(); // get an instance of the router for api routes
 
@@ -46,7 +32,7 @@ apiRoutes.post('/signup', function(req, res) {
       return res.status(409).send({ success: false, message: 'Name is already taken' });
     }
     if (!req.body.name || !req.body.password) {
-      return res.status(400).send({ success: false, message: 'Bad creditenials' });
+      return res.status(400).send({ success: false, message: 'Bad credentials' });
     }
     var user = new User({
       //displayName: req.body.displayName,
@@ -63,16 +49,16 @@ apiRoutes.post('/signup', function(req, res) {
 });
 
 apiRoutes.post('/login', function(req, res) {
-  User.findOne({ name: req.body.name }, function(err, user) { // ?+password
+  User.findOne({ name: req.body.name }, function(err, user) {
     if (err) throw err;
     if (!user) {
       //res.json({ success: false, message: 'Authentication failed. Wrong creditenials.' });
-      return res.status(401).send({ success: false, message: 'Authentication failed. Wrong name' }); // User not found
+      return res.status(401).send({ success: false, message: 'Authentication failed. Wrong credentials' }); // User not found
     }
     user.comparePassword(req.body.password, function(err, isMatch) {
       if (!isMatch) {
         //res.json({ success: false, message: 'Authentication failed. Wrong creditenials.' });
-        return res.status(401).send({ success: false, message: 'Authentication failed. Wrong password ' + err }); // Wrong password
+        return res.status(401).send({ success: false, message: 'Authentication failed. Wrong credentials' }); // Wrong password
       }
       // if user is found and password is right then create a token
       var token = jwt.sign(user, Config.secret, { expiresIn: 1440 }); // expires in 24 hours
